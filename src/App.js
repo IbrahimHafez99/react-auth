@@ -10,7 +10,6 @@ import Missing from './components/Missing';
 import Unauthorized from './components/Unauthorized';
 import RequireAuth from './components/RequireAuth';
 import { Routes, Route } from 'react-router-dom'
-import useAuth from './hooks/useAuth';
 
 const ROLES = {
   User: 2001,
@@ -19,7 +18,6 @@ const ROLES = {
 }
 
 function App() {
-  const { auth } = useAuth()
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
@@ -30,16 +28,16 @@ function App() {
         <Route path='unauthorized' element={<Unauthorized />} />
 
         {/* protected */}
-        <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+        <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]} />}>
           <Route path='/' element={<Home />} />
         </Route>
-        <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
+        <Route element={<RequireAuth allowedRoles={[ROLES.Editor, ROLES.User, ROLES.Admin]} />}>
           <Route path='editor' element={<Editor />} />
         </Route>
-        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+        <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User]} />}>
           <Route path='admin' element={<Admin />} />
         </Route>
-        <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Editor]} />}>
+        <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Editor, ROLES.User]} />}>
           <Route path='lounge' element={<Lounge />} />
         </Route>
         {/* 404 */}
