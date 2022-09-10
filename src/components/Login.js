@@ -7,7 +7,7 @@ const Login = () => {
   const location = useLocation();
   const route = location.state?.from?.pathname || "/"
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
+  const { persist, setPersist, setAuth } = useAuth();
   const userRef = useRef();
   const errRef = useRef();
 
@@ -54,8 +54,10 @@ const Login = () => {
       }
       errRef.current.focus()
     }
-
   }
+  useEffect(() => {
+    localStorage.setItem("persist", persist)
+  }, [persist])
   return (
     <>
       <section>
@@ -85,6 +87,11 @@ const Login = () => {
             required
           />
           <button>Sign In</button>
+          <div className='persistCheck'>
+            <input type='checkbox' id="persist" onChange={() => setPersist(prev => !prev)}
+              checked={persist} />
+            <label htmlFor='persist'>Trust this device</label>
+          </div>
         </form>
         <p>
           Need an Account? <br />
